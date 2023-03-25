@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Product {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String productName;
@@ -26,4 +27,5 @@ public class Product {
     private LocalDateTime publishDate;
     @ManyToOne
     private Category category;
+
 }

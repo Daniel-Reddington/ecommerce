@@ -16,8 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Category {
+
     private Integer id;
     private String type;
     @OneToMany(mappedBy = "category")
     private List<Product> products;
+
 }

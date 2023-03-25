@@ -11,7 +11,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
+
     private final CategoryRepository categoryRepository;
+
     @Override
     public Category addCategory(Category category) {
         if (category == null) throw new RuntimeException("Category is null");
