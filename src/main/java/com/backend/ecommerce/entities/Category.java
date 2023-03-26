@@ -1,8 +1,7 @@
 package com.backend.ecommerce.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +16,11 @@ import java.util.List;
 @Builder
 public class Category {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String type;
     @OneToMany(mappedBy = "category")
+    @JsonIgnore
     private List<Product> products;
 
 }
