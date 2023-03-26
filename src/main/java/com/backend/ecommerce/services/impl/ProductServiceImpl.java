@@ -3,16 +3,20 @@ package com.backend.ecommerce.services.impl;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.repositories.ProductRepository;
 import com.backend.ecommerce.services.interfaces.ProductService;
-import lombok.RequiredArgsConstructor;
+import com.backend.ecommerce.utils.mappers.ProductMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
+
+    private final ProductMapper productMapper;
+
     @Override
     public Product addProduct(Product product) {
         if(product == null) throw new RuntimeException("Product is null");
@@ -24,8 +28,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(Product product) {
-        return addProduct(product);
+    public Product updateProduct(Product currentProduct) {
+        if(currentProduct.getId() == null) throw new RuntimeException("id is null");
+
+        Product product = findProductById(currentProduct.getId());
+
+        currentProduct.setPublishDate(LocalDateTime.now());
+        currentProduct = productMapper.updateProduct(product, currentProduct);
+
+        return productRepository.save(currentProduct);
     }
 
     @Override
@@ -42,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findByProductNameContains(String productName) {
-        List<Product> products = productRepository.findByProductNameContains(productName);
+        List<Product> products = productRepository.findByProductNameContainsIgnoreCase(productName);
         return products;
     }
 

@@ -28,4 +28,16 @@ public class Product {
     @ManyToOne
     private Category category;
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", productImageUrl='" + productImageUrl + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", publishDate=" + publishDate +
+                '}';
+    }
 }

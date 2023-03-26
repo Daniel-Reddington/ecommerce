@@ -1,6 +1,7 @@
 package com.backend.ecommerce.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,7 @@ public class Category {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String type;
     @OneToMany(mappedBy = "category")
     @JsonIgnore

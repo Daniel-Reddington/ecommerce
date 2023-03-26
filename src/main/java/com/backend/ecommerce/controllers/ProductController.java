@@ -60,7 +60,7 @@ public class ProductController {
 
     }
 
-    @GetMapping("find-by-product-name/{productName}")
+    @GetMapping("find-by-product-name-contains/{productName}")
     public ResponseEntity<ApiResponse> findByProductNameContains(@PathVariable String productName){
 
         ApiResponse apiResponse = new ApiResponse();
