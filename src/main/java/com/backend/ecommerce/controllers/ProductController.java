@@ -32,7 +32,7 @@ public class ProductController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(productService.updateProduct(product));
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.CREATED);
+        apiResponse.setStatus(HttpStatus.OK);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
 
     }

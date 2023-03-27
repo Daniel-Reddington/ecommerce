@@ -1,6 +1,7 @@
 package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.entities.Category;
+import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.repositories.CategoryRepository;
 import com.backend.ecommerce.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +46,13 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> findAllCategory() {
         List<Category> categories = categoryRepository.findAll();
         return categories;
+    }
+
+    @Override
+    public List<Product> findAllProductInCategory(Integer idCategory) {
+        Category category = findCategoryById(idCategory);
+        if(category == null) throw new RuntimeException("Category not found");
+        List<Product> products = category.getProducts();
+        return products;
     }
 }

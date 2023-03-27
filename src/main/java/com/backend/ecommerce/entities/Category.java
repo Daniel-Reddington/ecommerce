@@ -19,7 +19,6 @@ public class Category {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String type;
     @OneToMany(mappedBy = "category")
     @JsonIgnore

@@ -5,13 +5,14 @@ import com.backend.ecommerce.repositories.ProductRepository;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import com.backend.ecommerce.utils.mappers.ProductMapper;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
