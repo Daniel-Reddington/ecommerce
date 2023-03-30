@@ -18,14 +18,14 @@ public class AppRoleServiceImpl implements AppRoleService {
     private final AppRoleRepository appRoleRepository;
 
     @Override
-    public AppRole addRole(AppRole role) {
+    public AppRole saveRole(AppRole role) {
         AppRole savedRole = appRoleRepository.save(role);
         return savedRole;
     }
 
     @Override
     public AppRole updateRole(AppRole role) {
-        return addRole(role);
+        return saveRole(role);
     }
 
     @Override

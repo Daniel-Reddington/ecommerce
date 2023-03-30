@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AppRoleService {
 
-    AppRole addRole(AppRole role);
+    AppRole saveRole(AppRole role);
     AppRole updateRole(AppRole role);
     void removeRole(Integer idRole);
     AppRole findRoleById(Integer idRole);

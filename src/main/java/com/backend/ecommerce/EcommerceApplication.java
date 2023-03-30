@@ -51,12 +51,12 @@ public class EcommerceApplication {
 			AppRole adminRole = AppRole.builder()
 					.roleName("ADMIN")
 					.build();
-			adminRole = appRoleService.addRole(adminRole);
+			adminRole = appRoleService.saveRole(adminRole);
 
 			AppRole userRole = AppRole.builder()
 					.roleName("USER")
 					.build();
-			userRole = appRoleService.addRole(userRole);
+			userRole = appRoleService.saveRole(userRole);
 
 			AppRole finalAdminRole = adminRole;
 			AppRole finalUserRole = userRole;
