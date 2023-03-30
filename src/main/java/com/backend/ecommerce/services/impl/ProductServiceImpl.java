@@ -4,14 +4,15 @@ import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.repositories.ProductRepository;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import com.backend.ecommerce.utils.mappers.ProductMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -63,4 +64,16 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(idProduct).orElse(null);
         return product;
     }
+
+    @Override
+    public List<Product> findAllProductByIds(List<Long> productIds) {
+        List<Product> products = productRepository.findAllById(productIds);
+        return products;
+    }
+
+    @Override
+    public void decrementStockQuantity(Long idProduct, Integer decrementQuantity) {
+        productRepository.decrementStockQuantity(idProduct, decrementQuantity);
+    }
+
 }

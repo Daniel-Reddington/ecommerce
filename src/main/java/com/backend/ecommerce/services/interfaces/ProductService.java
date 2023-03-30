@@ -11,5 +11,7 @@ public interface ProductService {
     List<Product> findAllProduct();
     List<Product> findByProductNameContains(String productName);
     Product findProductById(Long idProduct);
+    List<Product> findAllProductByIds(List<Long> productIds);
+    void decrementStockQuantity(Long idProduct, Integer decrementStockQuantity);
 
 }
