@@ -50,7 +50,7 @@ public class AppUserController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(appUserService.findAllUser());
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
@@ -60,7 +60,7 @@ public class AppUserController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(appUserService.findUserByUsernameContains(username));
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }

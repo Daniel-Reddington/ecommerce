@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AppRoleController {
 
-    private AppRoleService appRoleService;
+    private final AppRoleService appRoleService;
 
     @PostMapping("save-role")
     public ResponseEntity<ApiResponse> saveRole(@RequestBody AppRole appRole){
@@ -50,7 +50,7 @@ public class AppRoleController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(appRoleService.findAllRole());
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
@@ -60,7 +60,7 @@ public class AppRoleController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(appRoleService.findRoleById(idRole));
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }

@@ -51,7 +51,7 @@ public class CategoryController {
         Category category = categoryService.findCategoryById(idCategory);
         apiResponse.setData(category);
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
@@ -61,7 +61,7 @@ public class CategoryController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(categoryService.findAllCategory());
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
@@ -71,7 +71,7 @@ public class CategoryController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(categoryService.findAllProductInCategory(idCategory));
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
