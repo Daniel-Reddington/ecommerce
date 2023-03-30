@@ -36,9 +36,9 @@ public class ProductServiceImpl implements ProductService {
         Product product = findProductById(currentProduct.getId());
 
         currentProduct.setPublishDate(LocalDateTime.now());
-        currentProduct = productMapper.updateProduct(product, currentProduct);
+        Product updatedProduct = productMapper.updateProduct(product, currentProduct);
 
-        return productRepository.save(currentProduct);
+        return productRepository.save(updatedProduct);
     }
 
     @Override
