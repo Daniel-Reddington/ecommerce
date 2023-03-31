@@ -3,6 +3,8 @@ package com.backend.ecommerce.controllers;
 import com.backend.ecommerce.entities.AppUser;
 import com.backend.ecommerce.services.interfaces.AppUserService;
 import com.backend.ecommerce.utils.ApiResponse;
+import com.backend.ecommerce.utils.apiForm.ApiResponse;
+import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,65 +16,38 @@ import org.springframework.web.bind.annotation.*;
 public class AppUserController {
 
     private final AppUserService appUserService;
+    private final ApiResponseService apiResponseService;
 
     @PostMapping("add-user")
     public ResponseEntity<ApiResponse> addUser(@RequestBody AppUser appUser){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appUserService.addUser(appUser));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.CREATED);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appUserService.addUser(appUser), true, HttpStatus.CREATED);
     }
 
     @PatchMapping("update-user")
     public ResponseEntity<ApiResponse> updateUser(@RequestBody AppUser appUser){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appUserService.updateUser(appUser));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appUserService.updateUser(appUser), true, HttpStatus.OK);
     }
 
     @PostMapping("add-role-to-user/{idUser}/{idRole}")
     public ResponseEntity<ApiResponse> addRoleToUser(@PathVariable String idUser, @PathVariable Integer idRole){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appUserService.addRoleToUser(idUser, idRole));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(
+                appUserService.addRoleToUser(idUser, idRole), true, HttpStatus.OK);
     }
 
     @GetMapping("find-all-user")
     public ResponseEntity<ApiResponse> findAllUser(){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appUserService.findAllUser());
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appUserService.findAllUser(), true, HttpStatus.OK);
     }
 
     @GetMapping("find-by-username-contains/{username}")
     public ResponseEntity<ApiResponse> findUserByUsernameContains(@PathVariable String username){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appUserService.findUserByUsernameContains(username));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(
+                appUserService.findUserByUsernameContains(username), true, HttpStatus.OK);
     }
 
     @DeleteMapping("remove-user/{idUser}")
     public ResponseEntity<ApiResponse> removeUser(@PathVariable String idUser){
         appUserService.removeUserById(idUser);
-
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);
     }
 }

@@ -2,7 +2,8 @@ package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.entities.AppRole;
 import com.backend.ecommerce.services.interfaces.AppRoleService;
-import com.backend.ecommerce.utils.ApiResponse;
+import com.backend.ecommerce.utils.apiForm.ApiResponse;
+import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,56 +14,32 @@ import org.springframework.web.bind.annotation.*;
 public class AppRoleController {
 
     private final AppRoleService appRoleService;
+    private final ApiResponseService apiResponseService;
 
     @PostMapping("save-role")
     public ResponseEntity<ApiResponse> saveRole(@RequestBody AppRole appRole){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appRoleService.saveRole(appRole));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.CREATED);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appRoleService.saveRole(appRole),true,HttpStatus.CREATED);
     }
 
     @PutMapping("update-role")
     public ResponseEntity<ApiResponse> updateRole(@RequestBody AppRole appRole){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appRoleService.updateRole(appRole));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appRoleService.updateRole(appRole),true,HttpStatus.OK);
     }
 
     @DeleteMapping("remove-role/{idRole}")
     public ResponseEntity<ApiResponse> removeRole(@PathVariable Integer idRole){
         appRoleService.removeRole(idRole);
-
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);
     }
 
     @GetMapping("find-all-role")
     public ResponseEntity<ApiResponse> findAllRole(){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appRoleService.findAllRole());
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appRoleService.findAllRole(), true, HttpStatus.OK);
     }
 
     @GetMapping("find-role-by-id/{idRole}")
     public ResponseEntity<ApiResponse> findRoleById(@PathVariable Integer idRole){
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(appRoleService.findRoleById(idRole));
-        apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.OK);
-
-        return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
+        return apiResponseService.createApiResponseForm(appRoleService.findRoleById(idRole), true, HttpStatus.OK);
     }
 
 }
