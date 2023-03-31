@@ -2,7 +2,7 @@ package com.backend.ecommerce.controllers;
 
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.services.interfaces.ProductService;
-import com.backend.ecommerce.utils.ApiResponse;
+import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
