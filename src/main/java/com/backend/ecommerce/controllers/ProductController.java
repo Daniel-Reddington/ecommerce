@@ -55,7 +55,7 @@ public class ProductController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(productService.findAllProduct());
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
 
     }
@@ -66,7 +66,7 @@ public class ProductController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(productService.findByProductNameContains(productName));
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
 
     }
@@ -77,7 +77,7 @@ public class ProductController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(productService.findProductById(idProduct));
         apiResponse.setSuccess(true);
-        apiResponse.setStatus(HttpStatus.FOUND);
+        apiResponse.setStatus(HttpStatus.OK);
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
 
     }

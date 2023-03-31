@@ -1,18 +1,14 @@
 package com.backend.ecommerce;
 
-import com.backend.ecommerce.entities.Category;
-import com.backend.ecommerce.entities.Command;
-import com.backend.ecommerce.entities.CommandItem;
-import com.backend.ecommerce.entities.Product;
-import com.backend.ecommerce.services.interfaces.CategoryService;
-import com.backend.ecommerce.services.interfaces.CommandService;
-import com.backend.ecommerce.services.interfaces.ProductService;
+import com.backend.ecommerce.entities.*;
+import com.backend.ecommerce.services.interfaces.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -27,7 +23,9 @@ public class EcommerceApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(CategoryService categoryService,
 										ProductService productService,
-										CommandService commandService){
+										CommandService commandService,
+										AppUserService appUserService,
+										AppRoleService appRoleService){
 		return args -> {
 			// add category
 			Stream.of("CATEGORY1","CATEGORY2","CATEGORY3").forEach(c->{
@@ -49,6 +47,31 @@ public class EcommerceApplication {
 				productService.addProduct(product);
 			});
 
+			// save role
+			AppRole adminRole = AppRole.builder()
+					.roleName("ADMIN")
+					.build();
+			adminRole = appRoleService.saveRole(adminRole);
+
+			AppRole userRole = AppRole.builder()
+					.roleName("USER")
+					.build();
+			userRole = appRoleService.saveRole(userRole);
+
+			AppRole finalAdminRole = adminRole;
+			AppRole finalUserRole = userRole;
+
+			Stream.of("user1", "user2", "user3").map(username -> AppUser.builder()
+					.username(username)
+					.password("1234")
+					.address(username + " address")
+					.email(username + "@gmail.com")
+					.firstName(username + " firstname")
+					.lastName(username + " lastname")
+					.profilePictureUrl(username + " profile picture url")
+					.phoneNumber("032 00 000 01")
+					.appRoles(Arrays.asList((Math.random() > 0.5) ? finalAdminRole : finalUserRole))
+					.build()).forEach(appUserService::addUser);
 			Command command = new Command();
 
 			List<CommandItem> commandItems = new ArrayList<>();
@@ -67,6 +90,7 @@ public class EcommerceApplication {
 			command.setCommandItems(commandItems);
 
 			commandService.addCommand(command);
+
 		};
 	}
 

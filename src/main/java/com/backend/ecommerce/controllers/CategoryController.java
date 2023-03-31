@@ -36,7 +36,8 @@ public class CategoryController {
 
     @GetMapping("find-by-id/{idCategory}")
     public ResponseEntity<ApiResponse> findCategoryById(@PathVariable Integer idCategory){
-        return apiResponseService.createApiResponseForm(categoryService.findCategoryById(idCategory),true,HttpStatus.OK);
+        return apiResponseService.createApiResponseForm(
+                categoryService.findCategoryById(idCategory),true,HttpStatus.OK);
     }
 
     @GetMapping("find-all-category")
