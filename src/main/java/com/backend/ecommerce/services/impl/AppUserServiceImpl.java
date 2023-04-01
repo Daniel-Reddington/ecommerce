@@ -70,6 +70,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUser loadUserByUserName(String username) {
+        return appUserRepository.findByUsername(username);
+    }
+
+    @Override
     public List<AppUser> findUserByUsernameContains(String username) {
         List<AppUser> appUsers = appUserRepository.findByUsernameContainsIgnoreCase(username);
         if(appUsers.size() == 0) throw new AppUserNotFoundException("Nothing users with username contains "+username);

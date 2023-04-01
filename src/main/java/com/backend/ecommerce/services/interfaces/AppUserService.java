@@ -10,6 +10,7 @@ public interface AppUserService {
     AppUser updateUser(AppUser appUser);
     AppUser addRoleToUser(String idUser, Integer idRole);
     List<AppUser> findAllUser();
+    AppUser loadUserByUserName(String username);
     List<AppUser> findUserByUsernameContains(String username);
     AppUser findUserById(String idUser);
 
