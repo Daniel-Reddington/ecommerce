@@ -40,8 +40,8 @@ public class EcommerceApplication {
 						.productName(p)
 						.description(p+" descriptions")
 						.productImageUrl("path_to"+p)
-						.price(Math.random() * 100)
-						.stockQuantity((int) (Math.random() * 10))
+						.price((Math.random()+1) * 100)
+						.stockQuantity((int) ((Math.random()+1) * 10))
 						.category(categoryService.findCategoryById(1))
 						.build();
 				productService.addProduct(product);
@@ -69,7 +69,7 @@ public class EcommerceApplication {
 					.firstName(username + " firstname")
 					.lastName(username + " lastname")
 					.profilePictureUrl(username + " profile picture url")
-					.phoneNumber("032 00 000 01")
+					.phoneNumber("0321590833")
 					.appRoles(Arrays.asList((Math.random() > 0.5) ? finalAdminRole : finalUserRole))
 					.build()).forEach(appUserService::addUser);
 			Command command = new Command();

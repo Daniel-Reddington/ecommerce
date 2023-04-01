@@ -4,9 +4,11 @@ import com.backend.ecommerce.entities.AppRole;
 import com.backend.ecommerce.services.interfaces.AppRoleService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
+import com.backend.ecommerce.validator.AddMethodValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,12 +19,12 @@ public class AppRoleController {
     private final ApiResponseService apiResponseService;
 
     @PostMapping("save-role")
-    public ResponseEntity<ApiResponse> saveRole(@RequestBody AppRole appRole){
+    public ResponseEntity<ApiResponse> saveRole(@Validated(AddMethodValidator.class) @RequestBody AppRole appRole){
         return apiResponseService.createApiResponseForm(appRoleService.saveRole(appRole),true,HttpStatus.CREATED);
     }
 
     @PutMapping("update-role")
-    public ResponseEntity<ApiResponse> updateRole(@RequestBody AppRole appRole){
+    public ResponseEntity<ApiResponse> updateRole(@Validated @RequestBody AppRole appRole){
         return apiResponseService.createApiResponseForm(appRoleService.updateRole(appRole),true,HttpStatus.OK);
     }
 

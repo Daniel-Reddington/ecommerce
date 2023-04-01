@@ -35,7 +35,7 @@ public class CommandServiceImpl implements CommandService {
 
         List<Product> products = productService.findAllProductByIds(productIds);
 
-        if(command.getCommandItems().isEmpty() || products.size() == productIds.size()){
+        if(command.getCommandItems().isEmpty() || products.size() != productIds.size()){
             throw new RuntimeException("Command is empty");
         }
         //Set products to command item

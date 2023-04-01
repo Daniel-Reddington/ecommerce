@@ -7,16 +7,24 @@ import com.backend.ecommerce.exceptions.exceptionForm.ExceptionForm;
 import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-@ControllerAdvice
+@RestControllerAdvice
 @RequiredArgsConstructor
 public class HandlerExceptionController {
 
@@ -49,15 +57,33 @@ public class HandlerExceptionController {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleException(Exception exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
-        return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
+        return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiResponse> handleConstraintViolationException(ConstraintViolationException ex) {
-        String errorMessage = ex.getConstraintViolations().iterator().next().getMessage();
+        List<String> errorMessages = new ArrayList<>();
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            errorMessages.add(violation.getMessage());
+        }
+        String errorMessage = String.join("; ", errorMessages);
         ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
         return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        List<String> errorMessages = new ArrayList<>();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            errorMessages.add(error.getDefaultMessage());
+            System.out.println(error);
+        }
+        String errorMessage = String.join("; ", errorMessages);
+        ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
+        return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);
+    }
+
+
 
 
 }

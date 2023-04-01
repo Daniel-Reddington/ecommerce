@@ -7,6 +7,7 @@ import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,13 +19,13 @@ public class CategoryController {
     private final ApiResponseService apiResponseService;
 
     @PostMapping("add-category")
-    public ResponseEntity<ApiResponse> addCategory(@RequestBody Category category){
+    public ResponseEntity<ApiResponse> addCategory(@Validated @RequestBody Category category){
         return apiResponseService.createApiResponseForm(
                 categoryService.addCategory(category),true,HttpStatus.CREATED);
     }
 
     @PatchMapping("update-category")
-    public ResponseEntity<ApiResponse> updateCategory(@RequestBody Category category){
+    public ResponseEntity<ApiResponse> updateCategory(@Validated @RequestBody Category category){
         return apiResponseService.createApiResponseForm(categoryService.updateCategory(category),true,HttpStatus.OK);
     }
 

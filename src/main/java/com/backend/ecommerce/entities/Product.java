@@ -1,11 +1,10 @@
 package com.backend.ecommerce.entities;
 
+import com.backend.ecommerce.validator.AddMethodValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +23,8 @@ public class Product {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 70, nullable = false)
-    @NotBlank(message = "product name is required")
+    @NotBlank(message = "product name is required", groups = AddMethodValidator.class)
+    @Size(max = 70, message = "product name max length should be {max}")
     private String productName;
     private String productImageUrl;
     private String description;

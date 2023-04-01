@@ -3,9 +3,7 @@ package com.backend.ecommerce.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
@@ -22,6 +20,7 @@ public class Category {
     private Integer id;
     @Column(nullable = false, unique = true, length = 80)
     @NotBlank(message = "category type is required")
+    @Size(max = 80, message = "category's type max length should be {max}")
     private String type;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore

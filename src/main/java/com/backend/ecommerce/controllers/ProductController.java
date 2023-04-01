@@ -4,9 +4,12 @@ import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
+import com.backend.ecommerce.validator.AddMethodValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,14 +21,14 @@ public class ProductController {
     private final ApiResponseService apiResponseService;
 
     @PostMapping("add-product")
-    public ResponseEntity<ApiResponse> addProduct(@RequestBody Product product){
+    public ResponseEntity<ApiResponse> addProduct(@Validated(AddMethodValidator.class) @RequestBody Product product){
         return apiResponseService.createApiResponseForm(
                 productService.addProduct(product), true, HttpStatus.CREATED);
 
     }
 
     @PatchMapping("update-product")
-    public ResponseEntity<ApiResponse> updateProduct(@RequestBody Product product){
+    public ResponseEntity<ApiResponse> updateProduct(@Validated @RequestBody Product product){
         return apiResponseService.createApiResponseForm(
                 productService.updateProduct(product), true, HttpStatus.OK);
 

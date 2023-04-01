@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class CommandItem {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Positive(message = "command item price should be positive and more than zero")
+    @PositiveOrZero(message = "command item price should be positive and more than zero")
     private Double price;
     @Positive(message = "command item quantity should be positive and more than zero")
     private Integer quantity;

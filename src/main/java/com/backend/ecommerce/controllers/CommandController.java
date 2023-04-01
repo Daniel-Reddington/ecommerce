@@ -4,9 +4,11 @@ import com.backend.ecommerce.entities.Command;
 import com.backend.ecommerce.services.interfaces.CommandService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +20,7 @@ public class CommandController {
     private final ApiResponseService apiResponseService;
 
     @PostMapping("add-command")
-    public ResponseEntity<ApiResponse> addCommand(@RequestBody Command command){
+    public ResponseEntity<ApiResponse> addCommand(@Validated @RequestBody Command command){
         return apiResponseService.createApiResponseForm(
                 commandService.addCommand(command), true, HttpStatus.CREATED);
     }
