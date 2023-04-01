@@ -9,7 +9,6 @@ public interface CommandService {
 
     Command addCommand(Command command);
     void deleteCommand(Long idCommand);
-    boolean quantityIsLessThanProductQuantity(Command command);
     Double getTotalPrice(Command command);
 
 

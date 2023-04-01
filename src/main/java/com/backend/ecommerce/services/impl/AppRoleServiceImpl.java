@@ -1,6 +1,7 @@
 package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.entities.AppRole;
+import com.backend.ecommerce.exceptions.AppRoleNotFoundException;
 import com.backend.ecommerce.repositories.AppRoleRepository;
 import com.backend.ecommerce.services.interfaces.AppRoleService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,14 @@ public class AppRoleServiceImpl implements AppRoleService {
 
     @Override
     public AppRole saveRole(AppRole role) {
+        if(role == null) throw new RuntimeException("Role is null");
         AppRole savedRole = appRoleRepository.save(role);
         return savedRole;
     }
 
     @Override
     public AppRole updateRole(AppRole role) {
+        findRoleById(role.getId());
         return saveRole(role);
     }
 
@@ -35,16 +38,20 @@ public class AppRoleServiceImpl implements AppRoleService {
 
     @Override
     public AppRole findRoleById(Integer idRole) {
-        return appRoleRepository.findById(idRole).orElseThrow(()-> new RuntimeException("Role not found"));
+        return appRoleRepository.findById(idRole).orElseThrow(()-> new AppRoleNotFoundException("Role not found"));
     }
 
     @Override
     public List<AppRole> findAllRole() {
-        return appRoleRepository.findAll();
+        List<AppRole> appRoles = appRoleRepository.findAll();
+        if (appRoles.size() == 0) throw new AppRoleNotFoundException("Nothing roles found");
+        return appRoles;
     }
 
     @Override
     public List<AppRole> findAllByIds(HashSet<Integer> appRoleIds) {
-        return appRoleRepository.findAllById(appRoleIds);
+        List<AppRole> appRoles = appRoleRepository.findAllById(appRoleIds);
+        if (appRoles.size() == 0) throw new AppRoleNotFoundException("Nothing roles found");
+        return appRoles;
     }
 }

@@ -1,5 +1,6 @@
 package com.backend.ecommerce.services.interfaces;
 
+import com.backend.ecommerce.entities.CommandItem;
 import com.backend.ecommerce.entities.Product;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public interface ProductService {
     List<Product> findByProductNameContains(String productName);
     Product findProductById(Long idProduct);
     List<Product> findAllProductByIds(List<Long> productIds);
+    boolean isProductQuantityAvailable(CommandItem commandItem);
     void decrementStockQuantity(Long idProduct, Integer decrementStockQuantity);
 
 }

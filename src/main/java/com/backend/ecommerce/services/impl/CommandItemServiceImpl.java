@@ -34,4 +34,10 @@ public class CommandItemServiceImpl implements CommandItemService {
         return commandItemRepository.saveAll(command.getCommandItems());
     }
 
+    public void updateCommandItemPrice(CommandItem item) {
+        Product product = item.getProduct();
+        item.setPrice(product.getPrice() * item.getQuantity());
+    }
+
+
 }

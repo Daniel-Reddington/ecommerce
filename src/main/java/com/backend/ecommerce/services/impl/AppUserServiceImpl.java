@@ -2,6 +2,7 @@ package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.entities.AppRole;
 import com.backend.ecommerce.entities.AppUser;
+import com.backend.ecommerce.exceptions.AppUserNotFoundException;
 import com.backend.ecommerce.repositories.AppUserRepository;
 import com.backend.ecommerce.services.interfaces.AppRoleService;
 import com.backend.ecommerce.services.interfaces.AppUserService;
@@ -27,6 +28,8 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser addUser(AppUser appUser) {
 
+        if (appUser == null) throw new RuntimeException("User is null");
+
         appUser.setId(UUID.randomUUID().toString());
 
         HashSet<Integer> appRoleIds = new HashSet<>();
@@ -36,14 +39,14 @@ public class AppUserServiceImpl implements AppUserService {
 
         appUser.setAppRoles(appRoleService.findAllByIds(appRoleIds));
         appUser.setCreatedAt(LocalDateTime.now());
+        appUser.setUpdatedAt(LocalDateTime.now());
         AppUser savedUser = appUserRepository.save(appUser);
         return savedUser;
     }
 
     @Override
     public AppUser updateUser(AppUser currentAppUser) {
-        AppUser appUser = appUserRepository.findById(currentAppUser.getId()).orElse(null);
-        if(appUser == null) throw new RuntimeException("User not found");
+        AppUser appUser = findUserById(currentAppUser.getId());
         appUser.setUpdatedAt(LocalDateTime.now());
         AppUser updatedAppUser = appUserMapper.updateAppUser(appUser, currentAppUser);
         return appUserRepository.save(updatedAppUser);
@@ -59,21 +62,26 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public List<AppUser> findAllUser() {
-        return appUserRepository.findAll();
+        List<AppUser> appUsers = appUserRepository.findAll();
+        if(appUsers.size() == 0) throw new AppUserNotFoundException("Nothing users found");
+        return appUsers;
     }
 
     @Override
     public List<AppUser> findUserByUsernameContains(String username) {
-        return appUserRepository.findByUsernameContains(username);
+        List<AppUser> appUsers = appUserRepository.findByUsernameContainsIgnoreCase(username);
+        if(appUsers.size() == 0) throw new AppUserNotFoundException("Nothing users with username contains "+username);
+        return appUsers;
     }
 
     @Override
     public AppUser findUserById(String idUser) {
-        return appUserRepository.findById(idUser).orElseThrow(()-> new RuntimeException("User not found"));
+        return appUserRepository.findById(idUser).orElseThrow(()-> new AppUserNotFoundException("User not found"));
     }
 
     @Override
     public void removeUserById(String idUser) {
         appUserRepository.deleteById(idUser);
     }
+
 }

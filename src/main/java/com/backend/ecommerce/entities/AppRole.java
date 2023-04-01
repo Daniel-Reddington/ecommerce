@@ -2,6 +2,8 @@ package com.backend.ecommerce.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +21,7 @@ public class AppRole {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(unique = true, nullable = false)
+    @NotBlank(message = "role name is required")
     private String roleName;
     @ManyToMany(mappedBy = "appRoles",fetch = FetchType.LAZY)
     @JsonIgnore

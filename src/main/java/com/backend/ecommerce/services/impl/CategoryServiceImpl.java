@@ -2,6 +2,8 @@ package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.entities.Category;
 import com.backend.ecommerce.entities.Product;
+import com.backend.ecommerce.exceptions.CategoryNotFoundException;
+import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.repositories.CategoryRepository;
 import com.backend.ecommerce.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -25,34 +27,34 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category updateCategory(Category category) {
+        findCategoryById(category.getId());
         return addCategory(category);
     }
 
     @Override
     public void removeCategory(Integer idCategory) {
-        if (idCategory == null) throw new RuntimeException("Id of category is null");
         categoryRepository.deleteById(idCategory);
     }
 
     @Override
     public Category findCategoryById(Integer idCategory) {
-        Category category = categoryRepository.findById(idCategory).orElse(null);
-        if(category == null) throw new RuntimeException("User not found");
-
+        Category category = categoryRepository.findById(idCategory).orElseThrow(()->
+                new CategoryNotFoundException("Category of id '"+idCategory+"' not found"));
         return category;
     }
 
     @Override
     public List<Category> findAllCategory() {
         List<Category> categories = categoryRepository.findAll();
+        if(categories.size() == 0) throw new CategoryNotFoundException("Nothing categories found");
         return categories;
     }
 
     @Override
     public List<Product> findAllProductInCategory(Integer idCategory) {
         Category category = findCategoryById(idCategory);
-        if(category == null) throw new RuntimeException("Category not found");
         List<Product> products = category.getProducts();
+        if(products.isEmpty()) throw new ProductNotFoundException("Nothing products found for this category");
         return products;
     }
 }
