@@ -4,6 +4,7 @@ import com.backend.ecommerce.entities.AppRole;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public interface AppRoleService {
 
@@ -11,7 +12,7 @@ public interface AppRoleService {
     AppRole updateRole(AppRole role);
     void removeRole(Integer idRole);
     AppRole findRoleById(Integer idRole);
-    List<AppRole> findAllRole();
-    List<AppRole> findAllByIds(HashSet<Integer> appRoleIds);
+    Set<AppRole> findAllRole();
+    Set<AppRole> findAllByIds(Set<Integer> appRoleIds);
 
 }

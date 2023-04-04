@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class ProductController {
     private final ApiResponseService apiResponseService;
 
     @PostMapping("add-product")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ResponseEntity<ApiResponse> addProduct(@Validated(AddMethodValidator.class) @RequestBody Product product){
         return apiResponseService.createApiResponseForm(
                 productService.addProduct(product), true, HttpStatus.CREATED);
@@ -28,6 +30,7 @@ public class ProductController {
     }
 
     @PatchMapping("update-product")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ResponseEntity<ApiResponse> updateProduct(@Validated @RequestBody Product product){
         return apiResponseService.createApiResponseForm(
                 productService.updateProduct(product), true, HttpStatus.OK);
@@ -35,6 +38,7 @@ public class ProductController {
     }
 
     @DeleteMapping("remove/{idProduct}")
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ResponseEntity<ApiResponse> removeProduct(@PathVariable Long idProduct){
         productService.removeProduct(idProduct);
         return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);

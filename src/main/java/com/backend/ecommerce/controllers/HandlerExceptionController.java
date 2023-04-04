@@ -10,6 +10,7 @@ import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
+@Slf4j
 public class HandlerExceptionController {
 
     private final ApiResponseService apiResponseService;
@@ -33,30 +35,35 @@ public class HandlerExceptionController {
     @ExceptionHandler(AppRoleNotFoundException.class)
     public ResponseEntity<ApiResponse> handleAppRoleNotFoundException(AppRoleNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
+        System.out.println("role exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AppUserNotFoundException.class)
     public ResponseEntity<ApiResponse> handleAppUserNotFoundException(AppUserNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
+        System.out.println("user exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ApiResponse> handleCategoryNotFoundException(CategoryNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
+        System.out.println("category exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ApiResponse> handleProductNotFoundException(ProductNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
+        System.out.println("product exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleException(Exception exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
+        log.info("exception {}",exception);
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.BAD_REQUEST);
     }
 
@@ -68,6 +75,7 @@ public class HandlerExceptionController {
         }
         String errorMessage = String.join("; ", errorMessages);
         ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
+        System.out.println("constraint violation exception");
         return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);
     }
 
@@ -80,6 +88,7 @@ public class HandlerExceptionController {
         }
         String errorMessage = String.join("; ", errorMessages);
         ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
+        System.out.println("validation exception");
         return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);
     }
 

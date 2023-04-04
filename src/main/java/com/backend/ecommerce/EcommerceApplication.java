@@ -1,18 +1,21 @@
 package com.backend.ecommerce;
 
 import com.backend.ecommerce.entities.*;
+import com.backend.ecommerce.securities.config.RsaKeyConfig;
 import com.backend.ecommerce.services.interfaces.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SpringBootApplication
+@EnableConfigurationProperties(RsaKeyConfig.class)
 public class EcommerceApplication {
 
 	public static void main(String[] args) {
@@ -70,7 +73,7 @@ public class EcommerceApplication {
 					.lastName(username + " lastname")
 					.profilePictureUrl(username + " profile picture url")
 					.phoneNumber("0321590833")
-					.appRoles(Arrays.asList((Math.random() > 0.5) ? finalAdminRole : finalUserRole))
+					.appRoles(Stream.of((Math.random() > 0.5) ? finalAdminRole : finalUserRole).collect(Collectors.toSet()))
 					.build()).forEach(appUserService::addUser);
 			Command command = new Command();
 

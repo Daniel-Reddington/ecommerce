@@ -7,16 +7,13 @@ import com.backend.ecommerce.repositories.AppUserRepository;
 import com.backend.ecommerce.services.interfaces.AppRoleService;
 import com.backend.ecommerce.services.interfaces.AppUserService;
 import com.backend.ecommerce.utils.mappers.AppUserMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -26,15 +23,15 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final AppRoleService appRoleService;
     private final AppUserMapper appUserMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public AppUser addUser(AppUser appUser) {
 
         if (appUser == null) throw new RuntimeException("User is null");
 
-        appUser.setId(UUID.randomUUID().toString());
-
-        HashSet<Integer> appRoleIds = new HashSet<>();
+        appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
+        Set<Integer> appRoleIds = new LinkedHashSet<>();
         appUser.getAppRoles().forEach(role -> {
             appRoleIds.add(role.getId());
         });

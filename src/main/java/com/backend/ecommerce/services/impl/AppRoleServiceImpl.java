@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -42,16 +43,16 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
-    public List<AppRole> findAllRole() {
+    public Set<AppRole> findAllRole() {
         List<AppRole> appRoles = appRoleRepository.findAll();
         if (appRoles.size() == 0) throw new AppRoleNotFoundException("Nothing roles found");
-        return appRoles;
+        return new LinkedHashSet<>(appRoles);
     }
 
     @Override
-    public List<AppRole> findAllByIds(HashSet<Integer> appRoleIds) {
+    public Set<AppRole> findAllByIds(Set<Integer> appRoleIds) {
         List<AppRole> appRoles = appRoleRepository.findAllById(appRoleIds);
         if (appRoles.size() == 0) throw new AppRoleNotFoundException("Nothing roles found");
-        return appRoles;
+        return new LinkedHashSet<>(appRoles);
     }
 }
