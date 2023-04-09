@@ -1,12 +1,13 @@
 package com.backend.ecommerce.services.impl;
 
+import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.CommandItem;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.repositories.ProductRepository;
 import com.backend.ecommerce.services.interfaces.CategoryService;
-import com.backend.ecommerce.services.interfaces.CommandItemService;
 import com.backend.ecommerce.services.interfaces.ProductService;
+import com.backend.ecommerce.services.interfaces.FileService;
 import com.backend.ecommerce.utils.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,19 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
-
+    private final FileService uploadFileService;
     private final ProductMapper productMapper;
+
+    @Override
+    public Product createProduct(ProductDto productDto) {
+        if(productDto == null) throw new ProductNotFoundException("Product is required");
+        String directory = "/ImageStorage/ProductPicture";
+        String productImageUrl = uploadFileService.saveFile(productDto.getProductImage(), directory);
+        Product product = productMapper.productDtoToProduct(productDto);
+        product.setProductImageUrl(productImageUrl);
+        Product savedProduct = addProduct(product);
+        return savedProduct;
+    }
 
     @Override
     public Product addProduct(Product product) {

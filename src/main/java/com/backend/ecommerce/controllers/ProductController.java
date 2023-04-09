@@ -1,5 +1,6 @@
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
@@ -23,9 +24,9 @@ public class ProductController {
 
     @PostMapping("add-product")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ResponseEntity<ApiResponse> addProduct(@Validated(AddMethodValidator.class) @RequestBody Product product){
+    public ResponseEntity<ApiResponse> addProduct(@Validated(AddMethodValidator.class) @RequestBody ProductDto productDto){
         return apiResponseService.createApiResponseForm(
-                productService.addProduct(product), true, HttpStatus.CREATED);
+                productService.createProduct(productDto), true, HttpStatus.CREATED);
 
     }
 

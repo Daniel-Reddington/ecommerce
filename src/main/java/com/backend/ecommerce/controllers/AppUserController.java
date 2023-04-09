@@ -1,6 +1,8 @@
 package com.backend.ecommerce.controllers;
 
+import com.backend.ecommerce.dtos.UserAccountDto;
 import com.backend.ecommerce.entities.AppUser;
+import com.backend.ecommerce.services.interfaces.AccountService;
 import com.backend.ecommerce.services.interfaces.AppUserService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
@@ -17,15 +19,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "api/users")
 @RequiredArgsConstructor
-//@SecurityRequirement(name = "bearerAuth")
 public class AppUserController {
 
     private final AppUserService appUserService;
     private final ApiResponseService apiResponseService;
+    private final AccountService accountService;
 
     @PostMapping("create-account")
-    public ResponseEntity<ApiResponse> addUser(@Validated(AddMethodValidator.class) @RequestBody AppUser appUser){
-        return apiResponseService.createApiResponseForm(appUserService.addUser(appUser), true, HttpStatus.CREATED);
+    public ResponseEntity<ApiResponse> addUser(@Validated(AddMethodValidator.class) @RequestBody UserAccountDto userAccountDto){
+        return apiResponseService.createApiResponseForm(accountService.createAccount(userAccountDto), true, HttpStatus.CREATED);
     }
 
     @PatchMapping("update-user")

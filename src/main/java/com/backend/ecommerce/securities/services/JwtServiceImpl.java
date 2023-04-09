@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -81,14 +82,13 @@ public class JwtServiceImpl implements JwtService{
         return idToken;
     }
 
-    public List<String> getSubjectAndScopeFromAuthentication(UserLoginForm userLoginForm){
+    public List<String> getSubjectAndScopeFromAuthentication(UserLoginForm userLoginForm) throws BadCredentialsException{
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        userLoginForm.username(),
-                        userLoginForm.password()
-                )
-        );
-
+                    new UsernamePasswordAuthenticationToken(
+                            userLoginForm.username(),
+                            userLoginForm.password()
+                    )
+            );
         String subject = authentication.getName();
         String scope = authentication.getAuthorities().stream().map(auth-> auth.getAuthority()).collect(Collectors.joining(" "));
         return Arrays.asList(subject, scope);

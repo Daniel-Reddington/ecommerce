@@ -35,28 +35,28 @@ public class HandlerExceptionController {
     @ExceptionHandler(AppRoleNotFoundException.class)
     public ResponseEntity<ApiResponse> handleAppRoleNotFoundException(AppRoleNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
-        System.out.println("role exception");
+        log.info("role exception", exception);
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AppUserNotFoundException.class)
     public ResponseEntity<ApiResponse> handleAppUserNotFoundException(AppUserNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
-        System.out.println("user exception");
+        log.info("user exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<ApiResponse> handleCategoryNotFoundException(CategoryNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
-        System.out.println("category exception");
+        log.info("category exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ProductNotFoundException.class)
     public ResponseEntity<ApiResponse> handleProductNotFoundException(ProductNotFoundException exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
-        System.out.println("product exception");
+        log.info("product exception");
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
@@ -75,7 +75,7 @@ public class HandlerExceptionController {
         }
         String errorMessage = String.join("; ", errorMessages);
         ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
-        System.out.println("constraint violation exception");
+        log.info("constraint violation exception");
         return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);
     }
 
@@ -84,11 +84,10 @@ public class HandlerExceptionController {
         List<String> errorMessages = new ArrayList<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errorMessages.add(error.getDefaultMessage());
-            System.out.println(error);
+            log.info("exception",error);
         }
         String errorMessage = String.join("; ", errorMessages);
         ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
-        System.out.println("validation exception");
         return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);
     }
 

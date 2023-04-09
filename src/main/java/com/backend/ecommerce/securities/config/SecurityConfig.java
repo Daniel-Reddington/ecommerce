@@ -9,6 +9,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -40,6 +42,8 @@ public class SecurityConfig {
     private final RsaKeyConfig rsaKeyConfig;
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsServiceImpl userDetailsService;
+    @Qualifier("delegatedAuthenticationEntryPoint")
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     private static final String[] PERMIT_ENDPOINT = {
             "api/roles/find-all-role/**",
@@ -68,10 +72,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         final String[] AUTH_WHITE_LIST = {
+                "/api/v1/auth/**",
                 "/v3/api-docs/**",
+                "/v3/api-docs.yaml",
                 "/swagger-ui/**",
-                "/v2/api-docs/**",
-                "/swagger-resources/**"
+                "/swagger-ui.html"
         };
         return httpSecurity
                 .csrf(csrf-> csrf.disable())
@@ -80,11 +85,14 @@ public class SecurityConfig {
                     auth.requestMatchers("/login/**").permitAll();
                     auth.requestMatchers(PERMIT_ENDPOINT).permitAll();
                     auth.requestMatchers(AUTH_WHITE_LIST).permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll();
                 })
                 .headers(header-> header.frameOptions().disable())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .exceptionHandling(exception->{
+                    exception.authenticationEntryPoint(authenticationEntryPoint);
+                })
                 .httpBasic(Customizer.withDefaults())
                 .build();
 

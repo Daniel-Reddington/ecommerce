@@ -68,7 +68,8 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser loadUserByUserName(String username) {
-        return appUserRepository.findByUsername(username);
+        AppUser appUser = appUserRepository.findByUsername(username);
+        return appUser;
     }
 
     @Override
