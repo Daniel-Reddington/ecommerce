@@ -34,5 +34,3 @@ build/
 
 ### key ###
 !**/src/main/resources/certs/
-!**/src/main/resources/certs/*
-.pem
