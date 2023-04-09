@@ -59,7 +59,7 @@ public class AppUserController {
     @DeleteMapping("remove-user/{idUser}")
     @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     public ResponseEntity<ApiResponse> removeUser(@PathVariable String idUser){
-        appUserService.removeUserById(idUser);
+        accountService.deleteAccount(idUser);
         return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);
     }
 }

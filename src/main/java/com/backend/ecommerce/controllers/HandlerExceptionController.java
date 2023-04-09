@@ -1,10 +1,7 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.exceptions.AppRoleNotFoundException;
-import com.backend.ecommerce.exceptions.AppUserNotFoundException;
-import com.backend.ecommerce.exceptions.CategoryNotFoundException;
+import com.backend.ecommerce.exceptions.*;
 import com.backend.ecommerce.exceptions.exceptionForm.ExceptionForm;
-import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import jakarta.validation.ConstraintViolation;
@@ -60,11 +57,18 @@ public class HandlerExceptionController {
         return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleFileNotFoundException(FileNotFoundException exception){
+        ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
+        log.info("file exception");
+        return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse> handleException(Exception exception){
         ExceptionForm exceptionForm = new ExceptionForm(exception.getMessage(), LocalDateTime.now());
         log.info("exception {}",exception);
-        return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.BAD_REQUEST);
+        return apiResponseService.createApiResponseForm(exceptionForm,false, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -84,8 +88,13 @@ public class HandlerExceptionController {
         List<String> errorMessages = new ArrayList<>();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errorMessages.add(error.getDefaultMessage());
-            log.info("exception",error);
         }
+        log.info("exception {} ",ex.getMessage());
+        log.info("exception {}",ex.getBody());
+        log.info("exception {}", ex.getBindingResult());
+        log.info("exception {}", ex.getDetailMessageArguments());
+        log.info("exception {}", ex.getStatusCode());
+        log.info("exception {}", ex.getParameter());
         String errorMessage = String.join("; ", errorMessages);
         ExceptionForm exceptionForm = new ExceptionForm(errorMessage, LocalDateTime.now());
         return apiResponseService.createApiResponseForm(exceptionForm, false, HttpStatus.BAD_REQUEST);

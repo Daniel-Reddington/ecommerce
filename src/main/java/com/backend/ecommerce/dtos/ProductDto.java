@@ -2,8 +2,13 @@ package com.backend.ecommerce.dtos;
 
 import com.backend.ecommerce.entities.Category;
 import com.backend.ecommerce.validator.AddMethodValidator;
+import com.fasterxml.jackson.annotation.JsonKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -12,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -31,9 +37,5 @@ public class ProductDto {
     private Double price;
     @PositiveOrZero(message = "Stock quantity must be positive")
     private Integer stockQuantity;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime publishDate;
-    @ManyToOne
     private Category category;
-
 }

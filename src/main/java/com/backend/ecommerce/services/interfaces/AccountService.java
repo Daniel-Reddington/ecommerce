@@ -6,5 +6,6 @@ import com.backend.ecommerce.entities.AppUser;
 public interface AccountService {
 
     AppUser createAccount(UserAccountDto userAccountDto);
+    void deleteAccount(String idUser);
 
 }

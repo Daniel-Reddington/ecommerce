@@ -1,8 +1,11 @@
 package com.backend.ecommerce;
 
+import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.*;
 import com.backend.ecommerce.securities.config.RsaKeyConfig;
 import com.backend.ecommerce.services.interfaces.*;
+import com.backend.ecommerce.utils.mappers.ProductMapper;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,7 +31,8 @@ public class EcommerceApplication {
 										ProductService productService,
 										CommandService commandService,
 										AppUserService appUserService,
-										AppRoleService appRoleService){
+										AppRoleService appRoleService,
+										ProductMapper productMapper){
 		return args -> {
 			// add category
 			Stream.of("CATEGORY1","CATEGORY2","CATEGORY3").forEach(c->{
@@ -93,6 +97,18 @@ public class EcommerceApplication {
 			command.setCommandItems(commandItems);
 
 			commandService.addCommand(command);
+
+			ProductDto productDto = new ProductDto();
+			productDto.setProductName("aefsdf");
+			productDto.setDescription("sdfsdfsdg");
+			productDto.setPrice(12D);
+			Category category = new Category();
+			category.setType("dsfsqdf");
+			category.setId(6);
+			productDto.setCategory(category);
+			System.out.println(productDto);
+			Product product = productMapper.productDtoToProduct(productDto);
+			System.out.println(product);
 
 		};
 	}

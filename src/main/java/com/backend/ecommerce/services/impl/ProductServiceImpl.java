@@ -1,6 +1,7 @@
 package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.dtos.ProductDto;
+import com.backend.ecommerce.entities.Category;
 import com.backend.ecommerce.entities.CommandItem;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.exceptions.ProductNotFoundException;
@@ -8,6 +9,7 @@ import com.backend.ecommerce.repositories.ProductRepository;
 import com.backend.ecommerce.services.interfaces.CategoryService;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import com.backend.ecommerce.services.interfaces.FileService;
+import com.backend.ecommerce.utils.constants.FileDirectory;
 import com.backend.ecommerce.utils.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,15 +24,18 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
-    private final FileService uploadFileService;
+    private final FileService fileService;
     private final ProductMapper productMapper;
 
     @Override
     public Product createProduct(ProductDto productDto) {
         if(productDto == null) throw new ProductNotFoundException("Product is required");
-        String directory = "/ImageStorage/ProductPicture";
-        String productImageUrl = uploadFileService.saveFile(productDto.getProductImage(), directory);
+        String directory = FileDirectory.productImageDirectory;
+        String productImageUrl = fileService.saveFile(productDto.getProductImage(), directory);
+
         Product product = productMapper.productDtoToProduct(productDto);
+        System.out.println(productDto);
+        System.out.println(product.getCategory());
         product.setProductImageUrl(productImageUrl);
         Product savedProduct = addProduct(product);
         return savedProduct;
@@ -58,8 +63,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void removeProduct(Long idProduct) {
-        List<CommandItem> commandItems = findProductById(idProduct).getCommandItems();
+        Product product = findProductById(idProduct);
         productRepository.deleteById(idProduct);
+        fileService.deleteFile(product.getProductImageUrl());
     }
 
     @Override
