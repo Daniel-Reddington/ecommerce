@@ -31,9 +31,7 @@ public class AppUserServiceImpl implements AppUserService {
 
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         Set<Integer> appRoleIds = new LinkedHashSet<>();
-        appUser.getAppRoles().forEach(role -> {
-            appRoleIds.add(role.getId());
-        });
+        appUser.getAppRoles().forEach(role -> appRoleIds.add(role.getId()));
 
         appUser.setAppRoles(appRoleService.findAllByIds(appRoleIds));
         appUser.setCreatedAt(LocalDateTime.now());

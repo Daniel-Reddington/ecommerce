@@ -1,15 +1,13 @@
 package com.backend.ecommerce.utils.deserializer;
 
 import com.backend.ecommerce.entities.AppRole;
-import com.backend.ecommerce.entities.Category;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RoleEditor extends PropertyEditorSupport {
 

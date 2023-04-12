@@ -4,7 +4,7 @@ import com.backend.ecommerce.entities.Command;
 import com.backend.ecommerce.services.interfaces.CommandService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "api/commands")
 @RequiredArgsConstructor
+@Tag(name = "Command")
 public class CommandController {
 
     private final CommandService commandService;

@@ -8,35 +8,25 @@ import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import com.backend.ecommerce.utils.deserializer.RoleEditor;
 import com.backend.ecommerce.validator.AddMethodValidator;
 import com.backend.ecommerce.validator.UpdateMethodValidator;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Encoding;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.mapping.Set;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.annotation.MultipartConfig;
-import java.util.List;
 
 
 @RestController
 @RequestMapping(path = "api/users")
 @RequiredArgsConstructor
+@Tag(name = "User")
 public class AppUserController {
 
     private final AppUserService appUserService;

@@ -1,6 +1,7 @@
 package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.entities.Command;
+import com.backend.ecommerce.entities.CommandItem;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.repositories.CommandRepository;
@@ -67,7 +68,7 @@ public class CommandServiceImpl implements CommandService {
     @Override
     public Double getTotalPrice(Command command) {
         return command.getCommandItems().stream()
-                .mapToDouble(commandItem -> commandItem.getPrice()).sum();
+                .mapToDouble(CommandItem::getPrice).sum();
     }
 
 }

@@ -4,8 +4,6 @@ import com.backend.ecommerce.securities.constants.TokenParam;
 import com.backend.ecommerce.utils.UserLoginForm;
 import com.backend.ecommerce.utils.constants.GrandType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -45,9 +43,7 @@ public class JwtServiceImpl implements JwtService{
                 .claim("scope", scope)
                 .build();
 
-        String jwtAccessToken = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
-
-        return jwtAccessToken;
+        return jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
 
     }
 
@@ -103,7 +99,7 @@ public class JwtServiceImpl implements JwtService{
             );
         String subject = authentication.getName();
         String scope = authentication.getAuthorities().stream()
-                .map(auth-> auth.getAuthority()).collect(Collectors.joining(" "));
+                .map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
         return Arrays.asList(subject, scope);
 
     }
@@ -114,7 +110,7 @@ public class JwtServiceImpl implements JwtService{
             throw new RuntimeException("Refresh token is required");
         }
 
-        Jwt decodedJwt = null;
+        Jwt decodedJwt;
 
         try {
             decodedJwt = jwtDecoder.decode(refreshToken);
@@ -125,7 +121,7 @@ public class JwtServiceImpl implements JwtService{
         String subject = decodedJwt.getSubject();
         UserDetails userDetails = userDetailsService.loadUserByUsername(subject);
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        String scope = authorities.stream().map(auth->auth.getAuthority()).collect(Collectors.joining(" "));
+        String scope = authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(" "));
 
         return Arrays.asList(subject, scope);
 

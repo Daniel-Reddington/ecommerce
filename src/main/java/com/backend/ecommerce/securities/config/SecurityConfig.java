@@ -1,7 +1,6 @@
 package com.backend.ecommerce.securities.config;
 
 import com.backend.ecommerce.securities.services.UserDetailsServiceImpl;
-import com.backend.ecommerce.services.interfaces.AppUserService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -19,11 +18,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -75,14 +73,14 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(){
-        return username ->  userDetailsService.loadUserByUsername(username);
+        return userDetailsService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         return httpSecurity
-                .csrf(csrf-> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(auth-> {
                     auth.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
@@ -98,9 +96,7 @@ public class SecurityConfig {
 
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
 
-                .exceptionHandling(exception->{
-                    exception.authenticationEntryPoint(authenticationEntryPoint);
-                })
+                .exceptionHandling(exception-> exception.authenticationEntryPoint(authenticationEntryPoint))
 
                 .httpBasic(Customizer.withDefaults())
                 .build();

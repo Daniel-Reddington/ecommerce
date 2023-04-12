@@ -7,10 +7,8 @@ import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import com.backend.ecommerce.utils.deserializer.CategoryEditor;
 import com.backend.ecommerce.validator.AddMethodValidator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,17 +18,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
-import java.beans.PropertyEditorSupport;
-import java.io.DataInput;
-import java.io.IOException;
-import java.lang.annotation.Repeatable;
-import java.nio.channels.MulticastChannel;
 
 @RestController
 @RequestMapping(path = "api/products")
 @RequiredArgsConstructor
+@Tag(name = "Product")
 public class ProductController {
 
     private final ProductService productService;

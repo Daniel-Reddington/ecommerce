@@ -4,19 +4,18 @@ import com.backend.ecommerce.validator.AddMethodValidator;
 import com.backend.ecommerce.validator.UpdateMethodValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
+@RequiredArgsConstructor
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -55,7 +54,7 @@ public class AppUser {
 
     @Column(length = 15)
     @Size(max = 15, message = "phone number max length should be {max}")
-    @Pattern(regexp = "^(\\+|0)[1-9]\\d{7,8}$", message = "Phone number should be in format +261XXXXXXXXX or 0XYXXXXXXXX")
+    @Pattern(regexp = "^([+0])[1-9]\\d{7,8}$", message = "Phone number should be in format +261XXXXXXXXX or 0XYXXXXXXXX")
     private String phoneNumber;
 
     @NotBlank(message = "address does not blank", groups = AddMethodValidator.class)
@@ -76,10 +75,12 @@ public class AppUser {
 
     @OneToMany(mappedBy = "appUser")
     @JsonIgnore
+    @ToString.Exclude
     List<Command> commands;
 
     @OneToMany(mappedBy = "appUser")
     @JsonIgnore
+    @ToString.Exclude
     List<Product> products;
 
 }

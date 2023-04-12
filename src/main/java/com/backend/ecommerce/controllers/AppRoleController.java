@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "api/roles")
 @RequiredArgsConstructor
-@Tag(name = "App-role")
+@Tag(name = "Role")
 public class AppRoleController {
 
     private final AppRoleService appRoleService;

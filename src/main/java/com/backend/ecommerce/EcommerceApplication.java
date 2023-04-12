@@ -3,8 +3,6 @@ package com.backend.ecommerce;
 import com.backend.ecommerce.entities.*;
 import com.backend.ecommerce.securities.config.RsaKeyConfig;
 import com.backend.ecommerce.services.interfaces.*;
-import com.backend.ecommerce.utils.mappers.ProductMapper;
-import com.nimbusds.jose.shaded.gson.JsonObject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,8 +28,7 @@ public class EcommerceApplication {
 										ProductService productService,
 										CommandService commandService,
 										AppUserService appUserService,
-										AppRoleService appRoleService,
-										ProductMapper productMapper){
+										AppRoleService appRoleService){
 		return args -> {
 			// add category
 			Stream.of("CATEGORY1","CATEGORY2","CATEGORY3").forEach(c->{
