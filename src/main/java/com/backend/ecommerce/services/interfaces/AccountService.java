@@ -7,7 +7,7 @@ public interface AccountService {
 
     AppUser createAccount(AppUser appUser, MultipartFile profilePicture);
     AppUser updateAccount(AppUser appUser);
-    boolean updatePassword(String idUser, String oldPassword, String currentPassword);
+    AppUser updatePassword(String idUser, String oldPassword, String currentPassword);
     void deleteAccount(String idUser);
 
 }

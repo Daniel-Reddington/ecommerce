@@ -39,13 +39,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean updatePassword(String idUser, String oldPassword, String currentPassword){
+    public AppUser updatePassword(String idUser, String oldPassword, String currentPassword){
         AppUser appUser = appUserService.findUserById(idUser);
         if(isPasswordHashed(oldPassword, appUser.getPassword())){
             appUser.setPassword(passwordEncoder.encode(currentPassword));
-            return true;
+            return appUser;
         }
-        return false;
+        return null;
     }
 
     public boolean isPasswordHashed(String password, String hashedPassword){

@@ -51,6 +51,15 @@ public class AppUserController {
         return apiResponseService.createApiResponseForm(accountService.updateAccount(appUser), true, HttpStatus.OK);
     }
 
+    @PutMapping("update-password")
+    @PreAuthorize("hasAnyAuthority('SCOPE_USER', 'SCOPE_ADMIN')")
+    public ResponseEntity<ApiResponse> updatePassword(@RequestParam String idUser,
+                                                      @RequestParam String oldPassword,
+                                                      @RequestParam String currentPassword){
+        return apiResponseService.createApiResponseForm(
+                accountService.updatePassword(idUser, oldPassword, currentPassword), true, HttpStatus.OK);
+    }
+
     @PostMapping("add-role-to-user/{idUser}/{idRole}")
     @PreAuthorize("hasAnyAuthority('SCOPE_USER', 'SCOPE_ADMIN')")
     public ResponseEntity<ApiResponse> addRoleToUser(@PathVariable String idUser, @PathVariable Integer idRole){
