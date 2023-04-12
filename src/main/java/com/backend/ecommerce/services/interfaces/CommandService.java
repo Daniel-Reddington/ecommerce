@@ -11,5 +11,4 @@ public interface CommandService {
     void deleteCommand(Long idCommand);
     Double getTotalPrice(Command command);
 
-
 }

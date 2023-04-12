@@ -1,6 +1,5 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.Category;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.services.interfaces.ProductService;
@@ -48,7 +47,6 @@ public class ProductController {
     @PreAuthorize("hasAuthority('SCOPE_USER')")
     public ResponseEntity<ApiResponse> addProduct(@RequestPart @Validated(AddMethodValidator.class) Product product,
                                                   @RequestPart MultipartFile productImage){
-
         return apiResponseService.createApiResponseForm(
                 productService.createProduct(product, productImage) , true, HttpStatus.CREATED);
     }
@@ -84,7 +82,6 @@ public class ProductController {
     public ResponseEntity<ApiResponse> findByProductNameContains(@PathVariable String productName){
         return apiResponseService.createApiResponseForm(
                 productService.findByProductNameContains(productName), true, HttpStatus.OK);
-
     }
 
     @GetMapping("find-by-id/{idProduct}")
@@ -92,6 +89,5 @@ public class ProductController {
         return apiResponseService.createApiResponseForm(
                 productService.findProductById(idProduct), true, HttpStatus.OK);
     }
-
 
 }

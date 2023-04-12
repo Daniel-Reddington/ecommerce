@@ -9,6 +9,7 @@ import java.util.List;
 
 @Configuration
 public class ConverterConfig {
+
     @Bean
     public MappingJackson2HttpMessageConverter octetStreamJsonConverter() {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();

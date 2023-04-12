@@ -19,16 +19,22 @@ public class CommandItem {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @PositiveOrZero(message = "command item price should be positive and more than zero")
     private Double price;
+
     @Positive(message = "command item quantity should be positive and more than zero")
     private Integer quantity;
+
     @ManyToOne
     @JsonIgnore
     private Command command;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Product product = new Product();
+
+
     @Override
     public String toString() {
         return "CommandItem{" +

@@ -3,11 +3,11 @@ package com.backend.ecommerce.exceptions;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class FileNotFoundException extends RuntimeException{
+public class UserUnauthorizedException extends RuntimeException{
 
     private String message;
 
-    public FileNotFoundException(String message){
+    public UserUnauthorizedException(String message){
         super(message);
         this.message = message;
     }

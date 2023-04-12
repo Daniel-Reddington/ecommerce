@@ -1,6 +1,5 @@
 package com.backend.ecommerce.utils.mappers;
 
-import com.backend.ecommerce.dtos.UserAccountDto;
 import com.backend.ecommerce.entities.AppUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,7 +14,5 @@ public interface AppUserMapper {
     AppUserMapper INSTANCE = Mappers.getMapper(AppUserMapper.class);
 
     AppUser updateAppUser(@MappingTarget AppUser appUser, AppUser currentAppUser);
-    @Mapping(target = "profilePictureUrl", ignore = true)
-    AppUser userAccountDtoToAppUser(UserAccountDto userAccountDto);
 
 }

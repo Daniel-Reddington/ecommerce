@@ -77,6 +77,7 @@ public class AppUser {
     @OneToMany(mappedBy = "appUser")
     @JsonIgnore
     List<Command> commands;
+
     @OneToMany(mappedBy = "appUser")
     @JsonIgnore
     List<Product> products;

@@ -48,7 +48,9 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser updatedUser = appUserMapper.updateAppUser(appUser, currentUser);
 
         updatedUser.setUpdatedAt(LocalDateTime.now());
+
         return appUserRepository.save(updatedUser);
+
     }
 
     @Override
@@ -56,6 +58,7 @@ public class AppUserServiceImpl implements AppUserService {
         AppUser appUser = findUserById(idUser);
         appUser.getAppRoles().add(AppRole.builder().id(idRole).build());
         AppUser savedUser = addUser(appUser);
+
         return savedUser;
     }
 
@@ -88,7 +91,7 @@ public class AppUserServiceImpl implements AppUserService {
     public boolean isAdmin(String idUser) {
         AppUser appUser = findUserById(idUser);
         AppRole appRole = appRoleService.findByRoleName("ADMIN");
-        return appUser.getAppRoles().contains(appRole);;
+        return appUser.getAppRoles().contains(appRole);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category addCategory(Category category) {
-        if (category == null) throw new RuntimeException("Category is null");
+        if (category == null) throw new CategoryNotFoundException("Category is null");
         category= categoryRepository.save(category);
 
         return category;
@@ -57,4 +57,5 @@ public class CategoryServiceImpl implements CategoryService {
         if(products.isEmpty()) throw new ProductNotFoundException("Nothing products found for this category");
         return products;
     }
+
 }

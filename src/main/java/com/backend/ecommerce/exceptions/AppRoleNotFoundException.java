@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class AppRoleNotFoundException extends RuntimeException{
+
     private String message;
 
     public AppRoleNotFoundException(String message){

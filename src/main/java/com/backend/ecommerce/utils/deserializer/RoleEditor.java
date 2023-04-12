@@ -11,7 +11,6 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.util.*;
 
-//@RequiredArgsConstructor
 public class RoleEditor extends PropertyEditorSupport {
 
     private final ObjectMapper objectMapper;
@@ -22,6 +21,7 @@ public class RoleEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
+
         try {
             AppRole[] roles = objectMapper.readValue(text, AppRole[].class);
             Set<AppRole> setRoles = new HashSet<>(Arrays.asList(roles));
@@ -29,5 +29,6 @@ public class RoleEditor extends PropertyEditorSupport {
         } catch (IOException e) {
             throw new IllegalArgumentException("Invalid app roles format");
         }
+
     }
 }
