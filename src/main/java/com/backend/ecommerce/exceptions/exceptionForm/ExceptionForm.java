@@ -14,5 +14,4 @@ public class ExceptionForm {
     private String message;
     private LocalDateTime exceptionDate;
 
-
 }

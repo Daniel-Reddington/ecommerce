@@ -1,7 +1,5 @@
 package com.backend.ecommerce.controllers;
 
-import com.backend.ecommerce.dtos.UserAccountDto;
-import com.backend.ecommerce.entities.AppRole;
 import com.backend.ecommerce.entities.AppUser;
 import com.backend.ecommerce.services.interfaces.AccountService;
 import com.backend.ecommerce.services.interfaces.AppUserService;
@@ -89,4 +87,5 @@ public class AppUserController {
         accountService.deleteAccount(idUser);
         return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);
     }
+
 }

@@ -44,6 +44,7 @@ public class JwtServiceImpl implements JwtService{
         String jwtAccessToken = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
 
         return jwtAccessToken;
+
     }
 
     @Override
@@ -62,12 +63,14 @@ public class JwtServiceImpl implements JwtService{
         String jwtRefreshToken = jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
 
         return jwtRefreshToken;
+
     }
 
     @Override
     public Map<String, String> generateToken(String grantType, UserLoginForm userLoginForm, boolean withRefreshToken, String refreshToken) {
 
         List<String> subjectAndScope = new ArrayList<>();
+
         if(grantType.equals("password")){
             subjectAndScope = getSubjectAndScopeFromAuthentication(userLoginForm);
         } else if (grantType.equals("refreshToken")) {
@@ -75,14 +78,19 @@ public class JwtServiceImpl implements JwtService{
         }
 
         Map<String, String> idToken = new HashMap<>();
-        idToken.put("access-token", generateAccessToken(subjectAndScope.get(0),subjectAndScope.get(1), withRefreshToken));
+        idToken.put("access-token",
+                generateAccessToken(subjectAndScope.get(0),subjectAndScope.get(1), withRefreshToken));
+
         if(withRefreshToken){
             idToken.put("refresh-token", generateRefreshToken(subjectAndScope.get(0),subjectAndScope.get(1)));
         }
+
         return idToken;
+
     }
 
     public List<String> getSubjectAndScopeFromAuthentication(UserLoginForm userLoginForm) throws BadCredentialsException{
+
         Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             userLoginForm.username(),
@@ -90,15 +98,20 @@ public class JwtServiceImpl implements JwtService{
                     )
             );
         String subject = authentication.getName();
-        String scope = authentication.getAuthorities().stream().map(auth-> auth.getAuthority()).collect(Collectors.joining(" "));
+        String scope = authentication.getAuthorities().stream()
+                .map(auth-> auth.getAuthority()).collect(Collectors.joining(" "));
         return Arrays.asList(subject, scope);
+
     }
 
     public List<String> getSubjectAndScopeFromRefreshToken(String refreshToken){
+
         if(refreshToken == null){
             throw new RuntimeException("Refresh token is required");
         }
+
         Jwt decodedJwt = null;
+
         try {
             decodedJwt = jwtDecoder.decode(refreshToken);
         }catch (JwtException exception){
@@ -111,5 +124,7 @@ public class JwtServiceImpl implements JwtService{
         String scope = authorities.stream().map(auth->auth.getAuthority()).collect(Collectors.joining(" "));
 
         return Arrays.asList(subject, scope);
+
     }
+
 }

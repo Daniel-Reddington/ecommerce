@@ -1,5 +1,6 @@
 package com.backend.ecommerce.services.impl;
 
+import com.backend.ecommerce.exceptions.FileCopyException;
 import com.backend.ecommerce.exceptions.FileNotFoundException;
 import com.backend.ecommerce.services.interfaces.FileService;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,10 @@ import java.util.UUID;
 
 @Service
 public class FileServiceImpl implements FileService {
+
     @Override
     public String saveFile(MultipartFile multipartFile, String directory) {
+
         if(multipartFile.isEmpty()) return null;
 
         String fileName = UUID.randomUUID() +"_"+multipartFile.getOriginalFilename();
@@ -28,18 +31,22 @@ public class FileServiceImpl implements FileService {
         try {
             multipartFile.transferTo(new File(filePath));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new FileCopyException("File copy failed");
         }
 
         return filePath;
+
     }
 
     @Override
     public void deleteFile(String path) {
+
         try {
             Files.deleteIfExists(Path.of(path));
         } catch (IOException e) {
             throw new FileNotFoundException("File not found");
         }
+
     }
+
 }

@@ -17,12 +17,13 @@ public class CategoryEditor extends PropertyEditorSupport {
 
     @Override
     public void setAsText(String text) throws IllegalArgumentException {
-        Category category = new Category();
+
         try {
-            category = objectMapper.readValue(text, Category.class);
+            Category category = objectMapper.readValue(text, Category.class);
+            setValue(category);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        setValue(category);
+
     }
 }

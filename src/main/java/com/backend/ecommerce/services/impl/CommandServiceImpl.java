@@ -1,7 +1,6 @@
 package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.entities.Command;
-import com.backend.ecommerce.entities.CommandItem;
 import com.backend.ecommerce.entities.Product;
 import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.repositories.CommandRepository;
@@ -9,6 +8,7 @@ import com.backend.ecommerce.services.interfaces.CommandItemService;
 import com.backend.ecommerce.services.interfaces.CommandService;
 import com.backend.ecommerce.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +24,6 @@ public class CommandServiceImpl implements CommandService {
     private final CommandRepository commandRepository;
     private final CommandItemService commandItemService;
     private final ProductService productService;
-
 
     @Override
     public Command addCommand(Command command) {
@@ -71,6 +70,5 @@ public class CommandServiceImpl implements CommandService {
         return command.getCommandItems().stream()
                 .mapToDouble(commandItem -> commandItem.getPrice()).sum();
     }
-
 
 }

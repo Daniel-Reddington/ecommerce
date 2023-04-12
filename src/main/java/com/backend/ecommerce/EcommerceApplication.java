@@ -1,6 +1,5 @@
 package com.backend.ecommerce;
 
-import com.backend.ecommerce.dtos.ProductDto;
 import com.backend.ecommerce.entities.*;
 import com.backend.ecommerce.securities.config.RsaKeyConfig;
 import com.backend.ecommerce.services.interfaces.*;
@@ -101,18 +100,6 @@ public class EcommerceApplication {
 			command.setAppUser(appUser);
 
 			commandService.addCommand(command);
-
-			ProductDto productDto = new ProductDto();
-			productDto.setProductName("aefsdf");
-			productDto.setDescription("sdfsdfsdg");
-			productDto.setPrice(12D);
-			Category category = new Category();
-			category.setType("dsfsqdf");
-			category.setId(6);
-			productDto.setCategory(category);
-			System.out.println(productDto);
-			Product product = productMapper.productDtoToProduct(productDto);
-			System.out.println(product);
 
 		};
 	}

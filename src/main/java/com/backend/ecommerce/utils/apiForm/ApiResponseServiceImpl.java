@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApiResponseServiceImpl implements ApiResponseService {
+
     @Override
     public ResponseEntity<ApiResponse> createApiResponseForm(Object object, boolean status, HttpStatus httpStatus) {
         ApiResponse apiResponse = new ApiResponse();
@@ -15,4 +16,5 @@ public class ApiResponseServiceImpl implements ApiResponseService {
 
         return new ResponseEntity<>(apiResponse, apiResponse.getStatus());
     }
+
 }

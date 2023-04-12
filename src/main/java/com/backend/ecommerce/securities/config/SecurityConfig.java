@@ -57,6 +57,14 @@ public class SecurityConfig {
             "api/products/find-by-id/**"
     };
 
+    private static final String[] AUTH_WHITE_LIST = {
+            "/api/v1/auth/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -69,17 +77,13 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(){
         return username ->  userDetailsService.loadUserByUsername(username);
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        final String[] AUTH_WHITE_LIST = {
-                "/api/v1/auth/**",
-                "/v3/api-docs/**",
-                "/v3/api-docs.yaml",
-                "/swagger-ui/**",
-                "/swagger-ui.html"
-        };
+
         return httpSecurity
                 .csrf(csrf-> csrf.disable())
+
                 .authorizeHttpRequests(auth-> {
                     auth.requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll();
                     auth.requestMatchers("/login/**").permitAll();
@@ -87,12 +91,17 @@ public class SecurityConfig {
                     auth.requestMatchers(AUTH_WHITE_LIST).permitAll();
                     auth.anyRequest().permitAll();
                 })
+
                 .headers(header-> header.frameOptions().disable())
+
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+
                 .exceptionHandling(exception->{
                     exception.authenticationEntryPoint(authenticationEntryPoint);
                 })
+
                 .httpBasic(Customizer.withDefaults())
                 .build();
 

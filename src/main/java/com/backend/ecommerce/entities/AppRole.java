@@ -22,13 +22,16 @@ public class AppRole {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(unique = true, nullable = false, length = 20)
     @NotBlank(message = "role name is required")
     @Size(max = 20, message = "role name size should be less than {max}")
     private String roleName;
+
     @ManyToMany(mappedBy = "appRoles",fetch = FetchType.LAZY)
     @JsonIgnore
     private List<AppUser> appUsers;
+
 
     @Override
     public String toString() {

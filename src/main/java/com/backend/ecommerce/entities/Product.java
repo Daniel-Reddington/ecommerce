@@ -51,6 +51,8 @@ public class Product {
 
     @ManyToOne
     private AppUser appUser;
+
+
     @Override
     public String toString() {
         return "Product{" +
@@ -63,4 +65,5 @@ public class Product {
                 ", publishDate=" + publishDate +
                 '}';
     }
+
 }

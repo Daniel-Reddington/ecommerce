@@ -16,9 +16,9 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByProductNameContainsIgnoreCase(String productName);
+
     @Modifying
     @Query("UPDATE Product p SET p.stockQuantity = p.stockQuantity - :quantity WHERE p.id = :id")
     void decrementStockQuantity(@Param("id") Long id, @Param("quantity") Integer quantity);
-
 
 }

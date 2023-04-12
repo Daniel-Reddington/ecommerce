@@ -33,4 +33,5 @@ public class CommandController {
         commandService.deleteCommand(idCommand);
         return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);
     }
+
 }

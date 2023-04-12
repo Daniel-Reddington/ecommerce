@@ -62,4 +62,5 @@ public class AppRoleServiceImpl implements AppRoleService {
         if (appRoles.size() == 0) throw new AppRoleNotFoundException("Nothing roles found");
         return new LinkedHashSet<>(appRoles);
     }
+
 }

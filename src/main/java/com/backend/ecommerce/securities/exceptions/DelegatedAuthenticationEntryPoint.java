@@ -23,7 +23,8 @@ public class DelegatedAuthenticationEntryPoint implements AuthenticationEntryPoi
     @Override
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
+                         AuthenticationException authException) {
         resolver.resolveException(request, response, null, authException);
     }
+
 }
