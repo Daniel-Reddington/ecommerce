@@ -13,6 +13,7 @@ public interface AppUserService {
     AppUser loadUserByUserName(String username);
     List<AppUser> findUserByUsernameContains(String username);
     AppUser findUserById(String idUser);
+    boolean isAdmin(String idUser);
 
     void removeUserById(String idUser);
 

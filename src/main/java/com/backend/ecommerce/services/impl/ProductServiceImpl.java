@@ -1,14 +1,10 @@
 package com.backend.ecommerce.services.impl;
 
 import com.backend.ecommerce.dtos.ProductDto;
-import com.backend.ecommerce.entities.Category;
-import com.backend.ecommerce.entities.CommandItem;
-import com.backend.ecommerce.entities.Product;
+import com.backend.ecommerce.entities.*;
 import com.backend.ecommerce.exceptions.ProductNotFoundException;
 import com.backend.ecommerce.repositories.ProductRepository;
-import com.backend.ecommerce.services.interfaces.CategoryService;
-import com.backend.ecommerce.services.interfaces.ProductService;
-import com.backend.ecommerce.services.interfaces.FileService;
+import com.backend.ecommerce.services.interfaces.*;
 import com.backend.ecommerce.utils.constants.FileDirectory;
 import com.backend.ecommerce.utils.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +21,7 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryService categoryService;
+    private final AppUserService appUserService;
     private final FileService fileService;
     private final ProductMapper productMapper;
     private static final String directory = FileDirectory.productImageDirectory;
@@ -34,7 +31,8 @@ public class ProductServiceImpl implements ProductService {
         if(product == null) throw new ProductNotFoundException("Product is required");
 
         String productImageUrl = fileService.saveFile(productImage, directory);
-
+        AppUser appUser = appUserService.findUserById(product.getAppUser().getId());
+        product.setAppUser(appUser);
         product.setProductImageUrl(productImageUrl);
         Product savedProduct = addProduct(product);
         return savedProduct;
@@ -54,6 +52,10 @@ public class ProductServiceImpl implements ProductService {
     public Product updateProduct(Product currentProduct) {
         Product product = findProductById(currentProduct.getId());
 
+        if(currentProduct.getAppUser().getId()
+                .equals(product.getAppUser().getId())){
+            throw new RuntimeException("User cannot update the product");
+        }
         currentProduct.setPublishDate(LocalDateTime.now());
         Product updatedProduct = productMapper.updateProduct(product, currentProduct);
 
@@ -61,8 +63,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProductImage(Long idProduct, MultipartFile productImage) {
+    public Product updateProductImage(Long idProduct, String appUserId, MultipartFile productImage) {
         Product product = findProductById(idProduct);
+
+        if(!appUserId.equals(product.getAppUser().getId())){
+            throw new RuntimeException("User cannot update the product");
+        }
+
         String productImageUrl = fileService.saveFile(productImage, directory);
         fileService.deleteFile(product.getProductImageUrl());
         product.setProductImageUrl(productImageUrl);
@@ -70,8 +77,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void removeProduct(Long idProduct) {
+    public void removeProduct(Long idProduct, String appUserId) {
         Product product = findProductById(idProduct);
+
+        if(!product.getAppUser().getId().equals(appUserId) || !appUserService.isAdmin(appUserId)){
+            throw new RuntimeException("User cannot remove the product");
+        }
+
         productRepository.deleteById(idProduct);
         fileService.deleteFile(product.getProductImageUrl());
     }

@@ -43,6 +43,13 @@ public class AppRoleServiceImpl implements AppRoleService {
     }
 
     @Override
+    public AppRole findByRoleName(String roleName) {
+        AppRole appRole = appRoleRepository.findByRoleName(roleName);
+        if (appRole == null) throw new AppRoleNotFoundException("Role not found");
+        return appRole;
+    }
+
+    @Override
     public Set<AppRole> findAllRole() {
         List<AppRole> appRoles = appRoleRepository.findAll();
         if (appRoles.size() == 0) throw new AppRoleNotFoundException("Nothing roles found");

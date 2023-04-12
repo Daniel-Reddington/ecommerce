@@ -49,6 +49,8 @@ public class Product {
     @JsonIgnore
     private List<CommandItem> commandItems;
 
+    @ManyToOne
+    private AppUser appUser;
     @Override
     public String toString() {
         return "Product{" +

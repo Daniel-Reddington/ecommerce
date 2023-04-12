@@ -63,15 +63,15 @@ public class ProductController {
 
     @PutMapping(value = "update-product-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ResponseEntity<ApiResponse> updateProductImage(@RequestParam Long idProduct, @RequestPart MultipartFile productImage){
+    public ResponseEntity<ApiResponse> updateProductImage(@RequestParam Long idProduct,@RequestParam String appUserId, @RequestPart MultipartFile productImage){
         return apiResponseService.createApiResponseForm(
-                productService.updateProductImage(idProduct, productImage),true,HttpStatus.OK);
+                productService.updateProductImage(idProduct, appUserId,productImage),true,HttpStatus.OK);
     }
 
     @DeleteMapping("remove/{idProduct}")
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ResponseEntity<ApiResponse> removeProduct(@PathVariable Long idProduct){
-        productService.removeProduct(idProduct);
+    @PreAuthorize("hasAnyAuthority('SCOPE_USER','SCOPE_ADMIN')")
+    public ResponseEntity<ApiResponse> removeProduct(@RequestParam Long idProduct, @RequestParam String appUserId){
+        productService.removeProduct(idProduct, appUserId);
         return apiResponseService.createApiResponseForm(null, true, HttpStatus.OK);
     }
 

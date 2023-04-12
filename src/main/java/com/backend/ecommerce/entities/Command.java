@@ -28,5 +28,7 @@ public class Command {
     private LocalDateTime commandDate;
     @OneToMany(mappedBy = "command", cascade = CascadeType.ALL)
     private List<CommandItem> commandItems;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private AppUser appUser = new AppUser();
 
 }

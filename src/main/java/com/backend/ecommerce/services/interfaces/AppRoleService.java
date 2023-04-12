@@ -12,6 +12,7 @@ public interface AppRoleService {
     AppRole updateRole(AppRole role);
     void removeRole(Integer idRole);
     AppRole findRoleById(Integer idRole);
+    AppRole findByRoleName(String roleName);
     Set<AppRole> findAllRole();
     Set<AppRole> findAllByIds(Set<Integer> appRoleIds);
 

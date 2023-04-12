@@ -43,14 +43,10 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public AppUser updateUser(AppUser currentUser) {
-        System.out.println("updateuser");
-        System.out.println(currentUser);
+
         AppUser appUser = findUserById(currentUser.getId());
-        System.out.println("appuser");
-        System.out.println(appUser);
         AppUser updatedUser = appUserMapper.updateAppUser(appUser, currentUser);
-        System.out.println("updateduser");
-        System.out.println(updatedUser);
+
         updatedUser.setUpdatedAt(LocalDateTime.now());
         return appUserRepository.save(updatedUser);
     }
@@ -86,6 +82,13 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser findUserById(String idUser) {
         return appUserRepository.findById(idUser).orElseThrow(()-> new AppUserNotFoundException("User not found"));
+    }
+
+    @Override
+    public boolean isAdmin(String idUser) {
+        AppUser appUser = findUserById(idUser);
+        AppRole appRole = appRoleService.findByRoleName("ADMIN");
+        return appUser.getAppRoles().contains(appRole);;
     }
 
     @Override

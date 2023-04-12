@@ -42,18 +42,6 @@ public class EcommerceApplication {
 				categoryService.addCategory(category);
 			});
 
-			Stream.of("PRODUCT1","PRODUCT2","PRODUCT3","PRODUCT4").forEach(p->{
-				Product product = Product.builder()
-						.productName(p)
-						.description(p+" descriptions")
-						.productImageUrl("path_to"+p)
-						.price((Math.random()+1) * 100)
-						.stockQuantity((int) ((Math.random()+1) * 10))
-						.category(categoryService.findCategoryById(1))
-						.build();
-				productService.addProduct(product);
-			});
-
 			// save role
 			AppRole adminRole = AppRole.builder()
 					.roleName("ADMIN")
@@ -79,6 +67,21 @@ public class EcommerceApplication {
 					.phoneNumber("0321590833")
 					.appRoles(Stream.of((Math.random() > 0.5) ? finalAdminRole : finalUserRole).collect(Collectors.toSet()))
 					.build()).forEach(appUserService::addUser);
+
+			AppUser appUser = appUserService.findUserByUsernameContains("user1").get(0);
+			Stream.of("PRODUCT1","PRODUCT2","PRODUCT3","PRODUCT4").forEach(p->{
+				Product product = Product.builder()
+						.productName(p)
+						.description(p+" descriptions")
+						.productImageUrl("path_to"+p)
+						.price((Math.random()+1) * 100)
+						.stockQuantity((int) ((Math.random()+1) * 10))
+						.category(categoryService.findCategoryById(1))
+						.appUser(appUser)
+						.build();
+				productService.addProduct(product);
+			});
+
 			Command command = new Command();
 
 			List<CommandItem> commandItems = new ArrayList<>();
@@ -95,6 +98,7 @@ public class EcommerceApplication {
 			commandItems.add(commandItem2);
 
 			command.setCommandItems(commandItems);
+			command.setAppUser(appUser);
 
 			commandService.addCommand(command);
 

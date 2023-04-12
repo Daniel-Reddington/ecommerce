@@ -74,4 +74,11 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<AppRole> appRoles = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "appUser")
+    @JsonIgnore
+    List<Command> commands;
+    @OneToMany(mappedBy = "appUser")
+    @JsonIgnore
+    List<Product> products;
+
 }
