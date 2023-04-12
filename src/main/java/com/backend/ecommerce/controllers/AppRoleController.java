@@ -5,6 +5,7 @@ import com.backend.ecommerce.services.interfaces.AppRoleService;
 import com.backend.ecommerce.utils.apiForm.ApiResponse;
 import com.backend.ecommerce.utils.apiForm.ApiResponseService;
 import com.backend.ecommerce.validator.AddMethodValidator;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "api/roles")
 @RequiredArgsConstructor
+@Tag(name = "App-role")
 public class AppRoleController {
 
     private final AppRoleService appRoleService;

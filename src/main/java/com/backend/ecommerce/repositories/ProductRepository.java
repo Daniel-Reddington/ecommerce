@@ -11,8 +11,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
-@RepositoryRestResource
-@ApiIgnore
+@RepositoryRestResource(exported = false)
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByProductNameContainsIgnoreCase(String productName);
