@@ -14,17 +14,20 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 
 import java.beans.PropertyEditorSupport;
 import java.io.DataInput;
 import java.io.IOException;
 import java.lang.annotation.Repeatable;
+import java.nio.channels.MulticastChannel;
 
 @RestController
 @RequestMapping(path = "api/products")
@@ -43,11 +46,11 @@ public class ProductController {
 
     @PostMapping(value = "add-product", consumes = "multipart/form-data")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    public ResponseEntity<ApiResponse> addProduct(@ModelAttribute(value = "productDto") @Validated(AddMethodValidator.class) ProductDto productDto){
+    public ResponseEntity<ApiResponse> addProduct(@RequestPart @Validated(AddMethodValidator.class) Product product,
+                                                  @RequestPart MultipartFile productImage){
 
-        Product product = productService.createProduct(productDto);
         return apiResponseService.createApiResponseForm(
-               product , true, HttpStatus.CREATED);
+                productService.createProduct(product, productImage) , true, HttpStatus.CREATED);
     }
 
     @PatchMapping("update-product")
@@ -56,6 +59,13 @@ public class ProductController {
         return apiResponseService.createApiResponseForm(
                 productService.updateProduct(product), true, HttpStatus.OK);
 
+    }
+
+    @PutMapping(value = "update-product-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    public ResponseEntity<ApiResponse> updateProductImage(@RequestParam Long idProduct, @RequestPart MultipartFile productImage){
+        return apiResponseService.createApiResponseForm(
+                productService.updateProductImage(idProduct, productImage),true,HttpStatus.OK);
     }
 
     @DeleteMapping("remove/{idProduct}")

@@ -14,6 +14,7 @@ import com.backend.ecommerce.utils.mappers.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,16 +27,14 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryService categoryService;
     private final FileService fileService;
     private final ProductMapper productMapper;
+    private static final String directory = FileDirectory.productImageDirectory;
 
     @Override
-    public Product createProduct(ProductDto productDto) {
-        if(productDto == null) throw new ProductNotFoundException("Product is required");
-        String directory = FileDirectory.productImageDirectory;
-        String productImageUrl = fileService.saveFile(productDto.getProductImage(), directory);
+    public Product createProduct(Product product, MultipartFile productImage) {
+        if(product == null) throw new ProductNotFoundException("Product is required");
 
-        Product product = productMapper.productDtoToProduct(productDto);
-        System.out.println(productDto);
-        System.out.println(product.getCategory());
+        String productImageUrl = fileService.saveFile(productImage, directory);
+
         product.setProductImageUrl(productImageUrl);
         Product savedProduct = addProduct(product);
         return savedProduct;
@@ -43,8 +42,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product addProduct(Product product) {
-        if(product == null) throw new ProductNotFoundException("Product is null");
-        categoryService.findCategoryById(product.getCategory().getId());
+        Category categoryById = categoryService.findCategoryById(product.getCategory().getId());
+        product.setCategory(categoryById);
         product.setPublishDate(LocalDateTime.now());
         product = productRepository.save(product);
 
@@ -59,6 +58,15 @@ public class ProductServiceImpl implements ProductService {
         Product updatedProduct = productMapper.updateProduct(product, currentProduct);
 
         return productRepository.save(updatedProduct);
+    }
+
+    @Override
+    public Product updateProductImage(Long idProduct, MultipartFile productImage) {
+        Product product = findProductById(idProduct);
+        String productImageUrl = fileService.saveFile(productImage, directory);
+        fileService.deleteFile(product.getProductImageUrl());
+        product.setProductImageUrl(productImageUrl);
+        return product;
     }
 
     @Override

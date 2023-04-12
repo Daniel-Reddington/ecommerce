@@ -51,13 +51,6 @@ public class AppUserController {
         binder.registerCustomEditor(Set.class, "appRoles", new RoleEditor(objectMapper));
     }
 
-    @Bean
-    public MappingJackson2HttpMessageConverter octetStreamJsonConverter() {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-        converter.setSupportedMediaTypes(List.of(new MediaType("application", "octet-stream")));
-        return converter;
-    }
-
     @PostMapping(value = "create-account", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ApiResponse> createAccount(@Validated(AddMethodValidator.class) @RequestPart AppUser appUser,
                                                      @RequestPart MultipartFile profilePicture){
