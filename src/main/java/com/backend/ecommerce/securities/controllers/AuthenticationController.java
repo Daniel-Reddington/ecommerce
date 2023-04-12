@@ -2,6 +2,7 @@ package com.backend.ecommerce.securities.controllers;
 
 import com.backend.ecommerce.securities.services.JwtService;
 import com.backend.ecommerce.utils.UserLoginForm;
+import com.backend.ecommerce.utils.constants.GrandType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> jwtToken(@RequestParam String grantType,@RequestBody UserLoginForm userLoginForm,
-                                                        @RequestParam boolean withRefreshToken,@RequestParam String refreshToken){
+    public ResponseEntity<Map<String, String>> jwtToken(@RequestParam GrandType grantType, @RequestBody UserLoginForm userLoginForm,
+                                                        @RequestParam boolean withRefreshToken, @RequestParam String refreshToken){
         return new ResponseEntity<>(jwtService.generateToken(grantType, userLoginForm,
                 withRefreshToken, refreshToken), HttpStatus.OK);
     }

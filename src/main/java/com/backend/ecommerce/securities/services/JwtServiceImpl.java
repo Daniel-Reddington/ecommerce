@@ -1,6 +1,8 @@
 package com.backend.ecommerce.securities.services;
 
+import com.backend.ecommerce.securities.constants.TokenParam;
 import com.backend.ecommerce.utils.UserLoginForm;
+import com.backend.ecommerce.utils.constants.GrandType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,9 @@ public class JwtServiceImpl implements JwtService{
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .subject(subject)
                 .issuedAt(instant)
-                .expiresAt(instant.plus(withRefreshToken?1:24, ChronoUnit.HOURS))
+                .expiresAt(
+                        instant.plus(withRefreshToken?TokenParam.EXPIRED_ACCESS_TOKEN:TokenParam.EXPIRED_REFRESH_TOKEN,
+                                ChronoUnit.HOURS))
                 .issuer("security-service")
                 .claim("scope", scope)
                 .build();
@@ -55,7 +59,7 @@ public class JwtServiceImpl implements JwtService{
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .subject(subject)
                 .issuedAt(instant)
-                .expiresAt(instant.plus(24, ChronoUnit.HOURS))
+                .expiresAt(instant.plus(TokenParam.EXPIRED_REFRESH_TOKEN, ChronoUnit.HOURS))
                 .issuer("security-service")
                 .claim("scope", scope)
                 .build();
@@ -67,13 +71,13 @@ public class JwtServiceImpl implements JwtService{
     }
 
     @Override
-    public Map<String, String> generateToken(String grantType, UserLoginForm userLoginForm, boolean withRefreshToken, String refreshToken) {
+    public Map<String, String> generateToken(GrandType grantType, UserLoginForm userLoginForm, boolean withRefreshToken, String refreshToken) {
 
         List<String> subjectAndScope = new ArrayList<>();
 
-        if(grantType.equals("password")){
+        if(grantType.equals(GrandType.PASSWORD)){
             subjectAndScope = getSubjectAndScopeFromAuthentication(userLoginForm);
-        } else if (grantType.equals("refreshToken")) {
+        } else if (grantType.equals(GrandType.REFRESHTOKEN)) {
             subjectAndScope = getSubjectAndScopeFromRefreshToken(refreshToken);
         }
 

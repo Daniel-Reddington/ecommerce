@@ -6,6 +6,7 @@ import com.backend.ecommerce.exceptions.AppUserNotFoundException;
 import com.backend.ecommerce.repositories.AppUserRepository;
 import com.backend.ecommerce.services.interfaces.AppRoleService;
 import com.backend.ecommerce.services.interfaces.AppUserService;
+import com.backend.ecommerce.utils.constants.RoleName;
 import com.backend.ecommerce.utils.mappers.AppUserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -90,7 +91,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public boolean isAdmin(String idUser) {
         AppUser appUser = findUserById(idUser);
-        AppRole appRole = appRoleService.findByRoleName("ADMIN");
+        AppRole appRole = appRoleService.findByRoleName(String.valueOf(RoleName.ADMIN));
         return appUser.getAppRoles().contains(appRole);
     }
 
