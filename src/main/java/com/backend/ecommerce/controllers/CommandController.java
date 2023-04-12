@@ -22,7 +22,7 @@ public class CommandController {
     private final ApiResponseService apiResponseService;
 
     @PostMapping("add-command")
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_USER', 'SCOPE_ADMIN')")
     public ResponseEntity<ApiResponse> addCommand(@Validated @RequestBody Command command){
         return apiResponseService.createApiResponseForm(
                 commandService.addCommand(command), true, HttpStatus.CREATED);

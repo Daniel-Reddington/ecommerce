@@ -37,7 +37,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "add-product", consumes = "multipart/form-data")
-    @PreAuthorize("hasAuthority('SCOPE_USER')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_USER', 'SCOPE_ADMIN')")
     public ResponseEntity<ApiResponse> addProduct(@RequestPart @Validated(AddMethodValidator.class) Product product,
                                                   @RequestPart MultipartFile productImage){
         return apiResponseService.createApiResponseForm(

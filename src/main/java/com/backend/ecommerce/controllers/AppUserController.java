@@ -68,7 +68,7 @@ public class AppUserController {
     }
 
     @GetMapping("find-all-user")
-    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_USER', 'SCOPE_ADMIN')")
     public ResponseEntity<ApiResponse> findAllUser(){
         return apiResponseService.createApiResponseForm(appUserService.findAllUser(), true, HttpStatus.OK);
     }

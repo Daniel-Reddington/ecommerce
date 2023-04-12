@@ -73,12 +73,12 @@ public class AppUser {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<AppRole> appRoles = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
     @JsonIgnore
     @ToString.Exclude
     List<Command> commands;
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
     @JsonIgnore
     @ToString.Exclude
     List<Product> products;
