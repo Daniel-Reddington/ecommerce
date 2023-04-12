@@ -28,8 +28,6 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUser addUser(AppUser appUser) {
 
-        if (appUser == null) throw new RuntimeException("User is null");
-
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         Set<Integer> appRoleIds = new LinkedHashSet<>();
         appUser.getAppRoles().forEach(role -> {
@@ -44,11 +42,17 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser updateUser(AppUser currentAppUser) {
-        AppUser appUser = findUserById(currentAppUser.getId());
-        appUser.setUpdatedAt(LocalDateTime.now());
-        AppUser updatedAppUser = appUserMapper.updateAppUser(appUser, currentAppUser);
-        return appUserRepository.save(updatedAppUser);
+    public AppUser updateUser(AppUser currentUser) {
+        System.out.println("updateuser");
+        System.out.println(currentUser);
+        AppUser appUser = findUserById(currentUser.getId());
+        System.out.println("appuser");
+        System.out.println(appUser);
+        AppUser updatedUser = appUserMapper.updateAppUser(appUser, currentUser);
+        System.out.println("updateduser");
+        System.out.println(updatedUser);
+        updatedUser.setUpdatedAt(LocalDateTime.now());
+        return appUserRepository.save(updatedUser);
     }
 
     @Override
