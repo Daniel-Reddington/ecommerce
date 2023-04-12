@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
     public Product updateProduct(Product currentProduct) {
         Product product = findProductById(currentProduct.getId());
 
-        if(currentProduct.getAppUser().getId()
+        if(!currentProduct.getAppUser().getId()
                 .equals(product.getAppUser().getId())){
             throw new RuntimeException("User cannot update the product");
         }
