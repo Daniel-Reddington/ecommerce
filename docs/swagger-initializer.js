@@ -15,7 +15,7 @@ window.onload = function() {
     ],
     layout: "StandaloneLayout" ,
 
-  "configUrl" : "/v3/api-docs/swagger-config",
+  "configUrl" : "api-docs.json",//"/v3/api-docs/swagger-config",
   "docExpansion" : "none",
   "tagsSorter" : "alpha",
   "validatorUrl" : ""
